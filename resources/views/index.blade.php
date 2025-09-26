@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TokoOnline - E-commerce Store</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="http://127.0.0.1:8000/assets/css/main.css" />
   </head>
   <body>
     <!-- Overlay -->
@@ -378,6 +378,6 @@
         </div>
       </div>
     </footer>
-    <script src="script.js"></script>
+    <script src="http://127.0.0.1:8000/assets/js/main.js"></script>
   </body>
 </html>
