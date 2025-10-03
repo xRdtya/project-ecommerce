@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TokoOnline - E-commerce Store</title>
-    <link rel="stylesheet" href="http://127.0.0.1:8000/assets/css/main.css" />
+    <link rel="stylesheet" href="http://localhost:8000/assets/css/main.css" />
   </head>
   <body>
     <!-- Overlay -->
@@ -82,6 +82,7 @@
       <h2 class="section-title">Produk Terbaru</h2>
       <div class="products-grid" id="productsGrid">
         <!-- Product 1 -->
+        @foreach ($products as $product)
         <div class="product-card" data-category="electronics">
           <img
             src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4b295106-dd4e-40f9-988e-56160a78666b.png"
@@ -89,20 +90,20 @@
             class="product-image"
           />
           <div class="product-info">
-            <h3 class="product-title">Smartphone XYZ</h3>
-            <p class="product-price">Rp 3.499.000</p>
+            <h3 class="product-title">{{ $product->title }}</h3>
+            <p class="product-price">Rp. {{ number_format($product->price) }}</p>
             <button
               class="add-to-cart"
-              data-id="1"
-              data-name="Smartphone XYZ"
-              data-price="3499000"
+              data-id="{{ $product->id }}"
+              data-name="{{ $product->title }}"
+              data-price="{{ $product->price }}"
               data-image="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e95e3a24-e5c8-439b-86c6-b4bd44dfce09.png"
             >
               Tambah ke Keranjang
             </button>
           </div>
         </div>
-
+        @endforeach
         <!-- Product 2 -->
         <div class="product-card" data-category="electronics">
           <img
@@ -378,6 +379,6 @@
         </div>
       </div>
     </footer>
-    <script src="http://127.0.0.1:8000/assets/js/main.js"></script>
+    <script src="http://localhost:8000/assets/js/main.js"></script>
   </body>
 </html>
