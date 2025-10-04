@@ -66,14 +66,12 @@
         <button class="category-filter active" data-category="all">
           Semua
         </button>
-        <button class="category-filter" data-category="electronics">
-          Elektronik
+        {{-- Looping Products Category --}}
+        @foreach ( $products->unique('category') as $product)
+        <button class="category-filter" data-category="{{ $product->category->name }}">
+          {{ $product->category->name }}
         </button>
-        <button class="category-filter" data-category="fashion">Fashion</button>
-        <button class="category-filter" data-category="home">
-          Rumah Tangga
-        </button>
-        <button class="category-filter" data-category="sports">Olahraga</button>
+        @endforeach
       </div>
     </section>
 
@@ -81,9 +79,9 @@
     <section class="container" id="products">
       <h2 class="section-title">Produk Terbaru</h2>
       <div class="products-grid" id="productsGrid">
-        <!-- Product 1 -->
+        <!-- Looping Products -->
         @foreach ($products as $product)
-        <div class="product-card" data-category="electronics">
+        <div class="product-card" data-category="{{ $product->category->name }}">
           <img
             src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4b295106-dd4e-40f9-988e-56160a78666b.png"
             alt="Smartphone modern dengan layar besar dan desain tipis"
@@ -104,159 +102,6 @@
           </div>
         </div>
         @endforeach
-        <!-- Product 2 -->
-        <div class="product-card" data-category="electronics">
-          <img
-            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4d1c80ec-ea78-4945-b1a6-fb0573b3f108.png"
-            alt="Laptop premium dengan layar tipis dan keyboard backlit"
-            class="product-image"
-          />
-          <div class="product-info">
-            <h3 class="product-title">Laptop Ultra Slim</h3>
-            <p class="product-price">Rp 8.999.000</p>
-            <button
-              class="add-to-cart"
-              data-id="2"
-              data-name="Laptop Ultra Slim"
-              data-price="8999000"
-              data-image="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/09ddff72-688d-4a4a-a11f-fd2d3fc43eea.png"
-            >
-              Tambah ke Keranjang
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 3 -->
-        <div class="product-card" data-category="fashion">
-          <img
-            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8703e988-e767-49e4-a3e8-08fbdc1bb6c0.png"
-            alt="Kaos casual dengan desain modern dan bahan katun nyaman"
-            class="product-image"
-          />
-          <div class="product-info">
-            <h3 class="product-title">Kaos Premium</h3>
-            <p class="product-price">Rp 199.000</p>
-            <button
-              class="add-to-cart"
-              data-id="3"
-              data-name="Kaos Premium"
-              data-price="199000"
-              data-image="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/af75c649-9e7b-45a8-9fdc-e786502f45c3.png"
-            >
-              Tambah ke Keranjang
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 4 -->
-        <div class="product-card" data-category="fashion">
-          <img
-            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/01912219-5681-4fad-8555-cb97672a4be3.png"
-            alt="Sepatu sneakers dengan sol karet dan desain sporty"
-            class="product-image"
-          />
-          <div class="product-info">
-            <h3 class="product-title">Sneakers Sporty</h3>
-            <p class="product-price">Rp 459.000</p>
-            <button
-              class="add-to-cart"
-              data-id="4"
-              data-name="Sneakers Sporty"
-              data-price="459000"
-              data-image="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c037fbcb-d54b-4675-b02f-f85825ed1629.png"
-            >
-              Tambah ke Keranjang
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 5 -->
-        <div class="product-card" data-category="home">
-          <img
-            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8e45afcb-cb10-441a-9392-a856cdf80cdf.png"
-            alt="Blender dapur dengan pisau stainless steel dan kapasitas besar"
-            class="product-image"
-          />
-          <div class="product-info">
-            <h3 class="product-title">Blender Multifungsi</h3>
-            <p class="product-price">Rp 650.000</p>
-            <button
-              class="add-to-cart"
-              data-id="5"
-              data-name="Blender Multifungsi"
-              data-price="650000"
-              data-image="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2dc1c311-f425-4eda-b340-0c771f040ed1.png"
-            >
-              Tambah ke Keranjang
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 6 -->
-        <div class="product-card" data-category="home">
-          <img
-            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2f68df1b-0970-4b2f-9548-621458c62fd2.png"
-            alt="Penyedot debu dengan teknologi canggih dan desain ergonomis"
-            class="product-image"
-          />
-          <div class="product-info">
-            <h3 class="product-title">Penyedot Debu Robot</h3>
-            <p class="product-price">Rp 1.799.000</p>
-            <button
-              class="add-to-cart"
-              data-id="6"
-              data-name="Penyedot Debu Robot"
-              data-price="1799000"
-              data-image="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d22ab817-3345-41fe-a8d7-0cf6ac61eccf.png"
-            >
-              Tambah ke Keranjang
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 7 -->
-        <div class="product-card" data-category="sports">
-          <img
-            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9a2c3c8e-0eeb-4f2f-b6b5-058076f7925e.png"
-            alt="Dumbel dengan pelapis krom dan grip ergonomis"
-            class="product-image"
-          />
-          <div class="product-info">
-            <h3 class="product-title">Dumbel Set 20kg</h3>
-            <p class="product-price">Rp 899.000</p>
-            <button
-              class="add-to-cart"
-              data-id="7"
-              data-name="Dumbel Set 20kg"
-              data-price="899000"
-              data-image="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ee1620e0-1a30-4d91-8a1a-dc0e9368be35.png"
-            >
-              Tambah ke Keranjang
-            </button>
-          </div>
-        </div>
-
-        <!-- Product 8 -->
-        <div class="product-card" data-category="sports">
-          <img
-            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1432342e-14ef-48c4-bb92-34a1ea6fbe42.png"
-            alt="Matras yoga dengan tekstur anti-slip dan bahan ramah lingkungan"
-            class="product-image"
-          />
-          <div class="product-info">
-            <h3 class="product-title">Matras Yoga Premium</h3>
-            <p class="product-price">Rp 299.000</p>
-            <button
-              class="add-to-cart"
-              data-id="8"
-              data-name="Matras Yoga Premium"
-              data-price="299000"
-              data-image="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7392c244-1217-4604-a719-f20a992f6db0.png"
-            >
-              Tambah ke Keranjang
-            </button>
-          </div>
-        </div>
       </div>
     </section>
 
