@@ -40,13 +40,14 @@ class VerifyCsrfToken
      * @var array<int, string>
      */
     protected $except = [];
-
+    
     /**
      * The globally ignored URIs that should be excluded from CSRF verification.
-     *
-     * @var array
-     */
-    protected static $neverVerify = [];
+    *
+    * @var array
+    */
+    protected static $neverVerify = [
+    ];
 
     /**
      * Indicates whether the XSRF-TOKEN cookie should be set on the response.
