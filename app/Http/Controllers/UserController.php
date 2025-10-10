@@ -13,11 +13,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return abort(200);
+        return view('login');
     }
 
     public function authenticate(Request $request)
     {
+
         $credentials = $request->validate([
             'email' => 'required|email:dns',
             'password' => 'required'
@@ -26,7 +27,7 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return abort(200);
+            return response()->json(['message' => 'success'], 200);;
         };
 
         return abort(403);
@@ -45,7 +46,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'username' => 'required|min:5|max:255',
+            'roles' => 'required',
+            'email' => 'required|unique:users|email:dns',
+            'password' => 'required|min:5|max:255'
+        ]);
+
+        User::create($validated);
+
+        return redirect('/');
     }
 
     /**
@@ -78,5 +88,16 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }
