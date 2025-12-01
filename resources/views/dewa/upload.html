@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Produk</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<div class="auth-container card-surface">
+
+    <h2>Upload Produk Baru</h2>
+
+    <form id="uploadForm">
+
+        <input type="text" id="prodTitle" placeholder="Judul Produk" required>
+
+        <input type="number" id="prodPrice" placeholder="Harga" required>
+
+        <textarea id="prodDesc" placeholder="Deskripsi Produk" required></textarea>
+
+        <label>Gambar Produk:</label>
+        <input type="file" id="prodImage" accept="image/*" required>
+
+        <div id="previewWrap"></div>
+
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+
+    <br>
+    <a href="seller_dashboard.html" class="btn">Kembali ke Dashboard</a>
+
+</div>
+
+<script src="upload.js"></script>
+
+</body>
+</html>
