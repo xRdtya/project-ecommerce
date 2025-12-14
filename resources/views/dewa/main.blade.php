@@ -4,51 +4,35 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>TokoOnline - E-commerce Store</title>
-
         <link rel="stylesheet" href="main.css" />
 
     </head>
-
     <body>
 
         <!-- Header -->
         <header>
             <div class="container">
                 <div class="header-content">
-
                     <a href="#" class="logo" onclick="openSection('home')">TokoOnline</a>
-
                     <button class="mobile-toggle" id="mobileToggle">☰</button>
-
-                    <<!-- Navigasi -->
                     <nav id="mainNav">
-                      <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="profile.html">Profil</a></li>
-                        <li><a href="login.html">Login▾</a></li>
-                          </ul>
-                        </li>
-                      </ul>
+                        <ul>
+                            <li><a href="#" onclick="openSection('home')">Home</a></li>
+                            <li><a href="profile.html">Profil</a></li>
+                            <li><a href="login.html">Login▾</a></li>
+                        </ul>
                     </nav>
-
                     <div class="header-actions">
-
-                        <!-- Search -->
                         <form class="search-form">
                             <input type="text" class="search-input" placeholder="Cari produk...">
                             <button type="submit" class="search-btn">🔍</button>
                         </form>
-
-                        <!-- Cart -->
                         <button class="cart-btn" id="cartBtn">
                             🛒 <span class="cart-count">0</span>
                         </button>
-
-                        <!-- Checkout (dipindah ke kanan header) -->
                         <button class="btn btn-primary" onclick="openSection('checkoutPage')">
                             Checkout
                         </button>
-
                     </div>
                 </div>
             </div>
