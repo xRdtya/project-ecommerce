@@ -27,6 +27,7 @@
                             <input type="text" class="search-input" placeholder="Cari produk...">
                             <button type="submit" class="search-btn">🔍</button>
                         </form>
+                        <!-- Cart -->
                         <button class="cart-btn" id="cartBtn">
                             🛒 <span class="cart-count">0</span>
                         </button>
@@ -71,9 +72,11 @@
             <button class="category-filter active" data-category="all">Semua</button>
 
             @foreach ( $products->unique('category') as $product )
+              @if ($product->category)
               <button class="category-filter" data-category="{{ $product->category->name }}">
                 {{ $product->category->name }}
               </button>
+              @endif
             @endforeach
           </div>
         </section>
@@ -230,6 +233,14 @@
 
 
         <!-- Scripts -->
+        <script>
+            // Inisialisasi checkout jika di halaman checkout
+            if (window.location.hash === '#checkout' || document.getElementById('checkoutPage')) {
+                document.addEventListener('DOMContentLoaded', function() {
+                    openSection('checkoutPage');
+                });
+            }
+        </script>
         <script src="/assets/main.js"></script>
         <script src="/assets/checkout.js"></script>
 
