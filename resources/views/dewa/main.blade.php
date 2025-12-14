@@ -241,8 +241,8 @@
                 });
             }
         </script>
-        <script src="/assets/main.js"></script>
-        <script src="/assets/checkout.js"></script>
+        <script src="main.js"></script>
+        <script src="checkout.js"></script>
 
     </body>
 </html>
