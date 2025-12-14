@@ -8,7 +8,7 @@
 
     </head>
     <body>
-
+        
         <!-- Header -->
         <header>
             <div class="container">
@@ -38,20 +38,31 @@
             </div>
         </header>
 
+        <!-- Overlay untuk cart -->
+        <div class="overlay" id="overlay"></div>
 
-        <!-- HOME SECTION -->
-        <section class="hero page-section" id="home">
-          <div class="container">
-            <div class="hero-content">
-              <h1>Selamat Datang di TokoOnline</h1>
-              <p>
-                Temukan berbagai produk berkualitas dengan harga terbaik hanya di toko kami.
-                Belanja sekarang dan dapatkan penawaran spesial!
-              </p>
-              <a href="#products" class="btn btn-primary">Jelajahi Produk</a>
+        <!-- Cart Sidebar -->
+        <div class="cart-sidebar" id="cartSidebar">
+            <h3>Keranjang Belanja</h3>
+            <button class="close-cart" id="closeCart">X</button>
+            <div id="emptyCartMessage" style="text-align: center; padding: 20px;">Keranjang kosong.</div>
+            <div id="cartItemsList" class="cart-items"></div>
+            <div class="cart-summary">
+                <h4>Total: <span id="cartTotal">Rp 0</span></h4>
+                <button class="btn btn-primary" id="checkoutBtn" onclick="openSection('checkoutPage')">Checkout</button>
             </div>
-          </div>
-        </section>
+        </div>
+    
+        <!-- HOME SECTION -->
+        <section class="page-section active-section" id="home">
+            <div class="container">
+                <section class="hero">
+                    <div class="hero-content">
+                        <h1>Temukan Produk Terbaik Hanya di Sini</h1>
+                        <p>Diskon hingga 50% untuk produk pilihan minggu ini.</p>
+                        <a href="#productsList" class="btn btn-primary">Mulai Belanja</a>
+                    </div>
+                </section>
 
         <section class="categories container page-section">
           <h2 class="section-title">Kategori Produk</h2>
