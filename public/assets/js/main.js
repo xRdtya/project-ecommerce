@@ -1,259 +1,367 @@
-document.addEventListener('DOMContentLoaded', function () {
-  // Elements
-  const mobileToggle = document.getElementById('mobileToggle');
-  const mainNav = document.getElementById('mainNav');
-  const cartBtn = document.getElementById('cartBtn');
-  const closeCart = document.getElementById('closeCart');
-  const cartSidebar = document.getElementById('cartSidebar');
-  const overlay = document.getElementById('overlay');
-  const checkoutBtn = document.getElementById('checkoutBtn');
-  const checkoutModal = document.getElementById('checkoutModal');
-  const checkoutForm = document.getElementById('checkoutForm');
-  const emptyCartMessage = document.getElementById('emptyCartMessage');
-  const cartItems = document.getElementById('cartItems');
-  const cartTotal = document.getElementById('cartTotal');
-  const cartCount = document.querySelector('.cart-count');
-  const categoryFilters = document.querySelectorAll('.category-filter');
-  const productCards = document.querySelectorAll('.product-card');
-  const addToCartButtons = document.querySelectorAll('.add-to-cart');
-  const searchInput = document.querySelector('.search-input');
-  const searchForm = document.querySelector('.search-form');
+document.addEventListener("DOMContentLoaded", function () {
+    // ===============================================
+    // MOBILE MENU & UI ELEMENTS
+    // ===============================================
+    const mobileToggle = document.getElementById("mobileToggle");
+    const mainNav = document.getElementById("mainNav");
 
-  // Cart data
-  let cart = [];
-
-  // Toggle mobile navigation
-  mobileToggle.addEventListener('click', function () {
-    mainNav.classList.toggle('active');
-  });
-
-  // Open cart
-  cartBtn.addEventListener('click', function () {
-    cartSidebar.classList.add('open');
-    overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  });
-
-  // Close cart
-  closeCart.addEventListener('click', closeCartSidebar);
-  overlay.addEventListener('click', closeCartSidebar);
-
-  function closeCartSidebar() {
-    cartSidebar.classList.remove('open');
-    overlay.classList.remove('active');
-    document.body.style.overflow = 'auto';
-  }
-
-  // Open checkout modal
-  checkoutBtn.addEventListener('click', function () {
-    if (cart.length > 0) {
-      checkoutModal.classList.add('open');
-      overlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
+    if (mobileToggle) {
+        mobileToggle.addEventListener("click", function () {
+            mainNav.classList.toggle("active");
+        });
     }
-  });
 
-  // Close checkout modal
-  overlay.addEventListener('click', function () {
-    if (checkoutModal.classList.contains('open')) {
-      checkoutModal.classList.remove('open');
-      overlay.classList.remove('active');
-      document.body.style.overflow = 'auto';
-    }
-  });
+    const cartSidebar = document.getElementById("cartSidebar");
+    const cartBtn = document.getElementById("cartBtn");
+    const closeCart = document.getElementById("closeCart");
+    const overlay = document.getElementById("overlay");
+    const cartItemsList = document.getElementById("cartItemsList");
+    const cartTotalElement = document.getElementById("cartTotal");
+    const cartCount = document.querySelector(".cart-count");
+    const emptyCartMessage = document.getElementById("emptyCartMessage");
+    const detailAddToCartBtn = document.getElementById("detailAddToCart");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    const searchForm = document.querySelector(".search-form");
+    const searchInput = document.querySelector(".search-input");
+    const categoryFilters = document.querySelectorAll(".category-filter");
 
-  // Handle checkout form submission
-  checkoutForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    alert('Pesanan Anda telah berhasil dibuat! Terima kasih telah berbelanja.');
-    cart = [];
-    updateCart();
-    checkoutModal.classList.remove('open');
-    overlay.classList.remove('active');
-    document.body.style.overflow = 'auto';
-  });
+    let currentDetailProduct = {};
 
-  // Filter products by category
-  categoryFilters.forEach(filter => {
-    filter.addEventListener('click', function () {
-      const category = this.getAttribute('data-category');
+    // ===============================================
+    // PERSISTENSI KERANJANG (LOCAL STORAGE)
+    // ===============================================
 
-      // Update active filter
-      categoryFilters.forEach(f => f.classList.remove('active'));
-      this.classList.add('active');
-
-      // Filter products
-      productCards.forEach(card => {
-        if (
-          category === 'all' ||
-          card.getAttribute('data-category') === category
-        ) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
+    function loadCart() {
+        try {
+            const storedCart = localStorage.getItem("shoppingCart");
+            return storedCart ? JSON.parse(storedCart) : [];
+        } catch (e) {
+            console.error("Gagal memuat keranjang dari LocalStorage:", e);
+            return [];
         }
-      });
-    });
-  });
-
-  // Search products
-  searchForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const searchTerm = searchInput.value.toLowerCase();
-
-    productCards.forEach(card => {
-      const title = card
-        .querySelector('.product-title')
-        .textContent.toLowerCase();
-      if (title.includes(searchTerm)) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  });
-
-  // Add to cart functionality
-  addToCartButtons.forEach(button => {
-    button.addEventListener('click', function () {
-      const id = this.getAttribute('data-id');
-      const name = this.getAttribute('data-name');
-      const price = parseInt(this.getAttribute('data-price'));
-      const image = this.getAttribute('data-image');
-
-      // Check if product already in cart
-      const existingItem = cart.find(item => item.id === id);
-
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push({
-          id,
-          name,
-          price,
-          image,
-          quantity: 1,
-        });
-      }
-
-      updateCart();
-
-      // Show cart sidebar after adding item
-      cartSidebar.classList.add('open');
-      overlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-
-  // Update cart UI
-  function updateCart() {
-    // Update cart count
-    const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-    cartCount.textContent = totalItems;
-
-    // Clear cart items
-    cartItems.innerHTML = '';
-
-    if (cart.length === 0) {
-      emptyCartMessage.style.display = 'block';
-      checkoutBtn.disabled = true;
-      checkoutBtn.style.opacity = '0.5';
-      cartTotal.textContent = 'Rp 0';
-    } else {
-      emptyCartMessage.style.display = 'none';
-      checkoutBtn.disabled = false;
-      checkoutBtn.style.opacity = '1';
-
-      // Calculate total
-      let total = 0;
-
-      // Add items to cart
-      cart.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
-
-        const cartItemElement = document.createElement('div');
-        cartItemElement.classList.add('cart-item');
-        cartItemElement.innerHTML = `
-                            <img src="${item.image}" alt="${
-          item.name
-        }" class="cart-item-image">
-                            <div class="cart-item-details">
-                                <h3 class="cart-item-title">${item.name}</h3>
-                                <p class="cart-item-price">Rp ${formatCurrency(
-                                  item.price
-                                )}</p>
-                                <div class="cart-item-actions">
-                                    <button class="quantity-btn minus" data-id="${
-                                      item.id
-                                    }">-</button>
-                                    <input type="number" class="quantity-input" value="${
-                                      item.quantity
-                                    }" min="1" data-id="${item.id}">
-                                    <button class="quantity-btn plus" data-id="${
-                                      item.id
-                                    }">+</button>
-                                    <button class="remove-item" data-id="${
-                                      item.id
-                                    }">Hapus</button>
-                                </div>
-                            </div>
-                        `;
-
-        cartItems.appendChild(cartItemElement);
-      });
-
-      // Format total currency
-      cartTotal.textContent = `Rp ${formatCurrency(total)}`;
-
-      // Add event listeners to quantity buttons
-      document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
-        btn.addEventListener('click', function () {
-          const id = this.getAttribute('data-id');
-          const item = cart.find(item => item.id === id);
-
-          if (item.quantity > 1) {
-            item.quantity -= 1;
-            updateCart();
-          }
-        });
-      });
-
-      document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
-        btn.addEventListener('click', function () {
-          const id = this.getAttribute('data-id');
-          const item = cart.find(item => item.id === id);
-
-          item.quantity += 1;
-          updateCart();
-        });
-      });
-
-      document.querySelectorAll('.quantity-input').forEach(input => {
-        input.addEventListener('change', function () {
-          const id = this.getAttribute('data-id');
-          const item = cart.find(item => item.id === id);
-          const newQuantity = parseInt(this.value);
-
-          if (newQuantity > 0) {
-            item.quantity = newQuantity;
-            updateCart();
-          }
-        });
-      });
-
-      document.querySelectorAll('.remove-item').forEach(btn => {
-        btn.addEventListener('click', function () {
-          const id = this.getAttribute('data-id');
-          cart = cart.filter(item => item.id !== id);
-          updateCart();
-        });
-      });
     }
-  }
 
-  // Format currency
-  function formatCurrency(amount) {
-    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  }
+    function saveCart() {
+        localStorage.setItem("shoppingCart", JSON.stringify(cart));
+    }
+
+    let cart = loadCart();
+
+    // Update cart count function
+    function updateCartCountAndSave() {
+        if (cartCount) {
+            cartCount.textContent = cart.reduce(
+                (total, item) => total + item.qty,
+                0
+            );
+        }
+        saveCart();
+    }
+
+    // Add to cart with toast notification
+    function addToCart(itemData) {
+        const existingItemIndex = cart.findIndex(
+            (item) => item.id == itemData.id
+        );
+
+        if (existingItemIndex > -1) {
+            cart[existingItemIndex].qty += 1;
+            showToast(`${itemData.name} ditambahkan lagi (+1)`);
+        } else {
+            cart.push({ ...itemData, qty: 1 });
+            showToast(`${itemData.name} ditambahkan ke keranjang`);
+        }
+
+        updateCartCountAndSave();
+
+        // Update display jika cart sidebar terbuka
+        if (cartSidebar && cartSidebar.classList.contains("open")) {
+            updateCartDisplay();
+        }
+    }
+
+    // Complete cart display function
+    function updateCartDisplay() {
+        updateCartCountAndSave();
+
+        if (cartItemsList) {
+            cartItemsList.innerHTML = "";
+            let total = 0;
+
+            if (cart.length === 0) {
+                if (emptyCartMessage) emptyCartMessage.style.display = "block";
+                if (cartTotalElement) cartTotalElement.textContent = "Rp 0";
+            } else {
+                if (emptyCartMessage) emptyCartMessage.style.display = "none";
+
+                cart.forEach((item) => {
+                    const itemTotal = item.price * item.qty;
+                    total += itemTotal;
+
+                    const cartItem = document.createElement("div");
+                    cartItem.className = "cart-item";
+                    cartItem.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="item-info">
+                            <h4>${item.name}</h4>
+                            <p>Rp ${item.price.toLocaleString()} x ${
+                        item.qty
+                    }</p>
+                            <p>Subtotal: Rp ${itemTotal.toLocaleString()}</p>
+                        </div>
+                        <button class="remove-item" data-id="${
+                            item.id
+                        }">Hapus</button>
+                    `;
+                    cartItemsList.appendChild(cartItem);
+                });
+
+                if (cartTotalElement)
+                    cartTotalElement.textContent = `Rp ${total.toLocaleString()}`;
+            }
+        }
+
+        attachCartListeners();
+    }
+
+    function attachCartListeners() {
+        document.querySelectorAll(".remove-item").forEach((btn) => {
+            btn.addEventListener("click", function () {
+                const id = this.getAttribute("data-id");
+                const itemName =
+                    cart.find((item) => item.id == id)?.name || "Item";
+                cart = cart.filter((item) => item.id != id);
+                updateCartDisplay();
+                showToast(`${itemName} dihapus dari keranjang`);
+            });
+        });
+    }
+
+    // Toast notification system
+    function showToast(message) {
+        // Hapus toast lama jika ada
+        const oldToast = document.querySelector(".toast");
+        if (oldToast) oldToast.remove();
+
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        // Styling toast
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4a6cf7;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            z-index: 9999;
+            font-weight: 500;
+            animation: fadeInUp 0.3s, fadeOutDown 0.3s 2.7s;
+        `;
+
+        // Animasi keyframes
+        const style = document.createElement("style");
+        style.textContent = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translate(-50%, 20px); }
+                to { opacity: 1; transform: translate(-50%, 0); }
+            }
+            @keyframes fadeOutDown {
+                from { opacity: 1; transform: translate(-50%, 0); }
+                to { opacity: 0; transform: translate(-50%, 20px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        setTimeout(() => {
+            toast.remove();
+            style.remove();
+        }, 3000);
+    }
+
+    // ===============================================
+    // EVENT LISTENERS UTAMA
+    // ===============================================
+
+    if (cartBtn)
+        cartBtn.addEventListener("click", function () {
+            if (cartSidebar) {
+                cartSidebar.classList.add("open");
+                updateCartDisplay();
+            }
+            if (overlay) overlay.classList.add("active");
+        });
+
+    if (closeCart)
+        closeCart.addEventListener("click", function () {
+            if (cartSidebar) cartSidebar.classList.remove("open");
+            if (overlay) overlay.classList.remove("active");
+        });
+
+    if (overlay)
+        overlay.addEventListener("click", function () {
+            if (cartSidebar) cartSidebar.classList.remove("open");
+            overlay.classList.remove("active");
+        });
+
+    // Checkout button handler
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener("click", function () {
+            if (cart.length === 0) {
+                alert("Keranjang masih kosong!");
+                return;
+            }
+            openSection("checkoutPage");
+            if (cartSidebar) cartSidebar.classList.remove("open");
+            if (overlay) overlay.classList.remove("active");
+        });
+    }
+
+    // Delegated event listener for add to cart buttons
+    document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("add-to-cart")) {
+            const btn = e.target;
+            const item = {
+                id: btn.dataset.id,
+                name: btn.dataset.name,
+                price: Number(btn.dataset.price),
+                image: btn.dataset.image,
+            };
+            addToCart(item);
+        }
+    });
+
+    // Search functionality
+    if (searchForm) {
+        searchForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const query = searchInput.value.trim().toLowerCase();
+
+            if (!query) {
+                // Reset tampilan jika search kosong
+                document.querySelectorAll(".product-card").forEach((card) => {
+                    card.style.display = "block";
+                });
+                return;
+            }
+
+            // Filter produk berdasarkan judul
+            document.querySelectorAll(".product-card").forEach((card) => {
+                const title = card
+                    .querySelector(".product-title")
+                    .textContent.toLowerCase();
+                if (title.includes(query)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            showToast(`Menampilkan hasil untuk: "${query}"`);
+        });
+
+        // Reset saat input dikosongkan
+        searchInput.addEventListener("input", function () {
+            if (this.value.trim() === "") {
+                document.querySelectorAll(".product-card").forEach((card) => {
+                    card.style.display = "block";
+                });
+            }
+        });
+    }
+
+    // Category filter functionality
+    // CATEGORY FILTER (hanya di section)
+    if (categoryFilters.length > 0) {
+        categoryFilters.forEach((filter) => {
+            filter.addEventListener("click", function () {
+                // Update active state
+                categoryFilters.forEach((f) => f.classList.remove("active"));
+                this.classList.add("active");
+
+                const category = this.dataset.category;
+
+                // Filter produk
+                document.querySelectorAll(".product-card").forEach((card) => {
+                    if (
+                        category === "all" ||
+                        card.dataset.category === category
+                    ) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+
+                if (category !== "all") {
+                    showToast(`Menampilkan kategori: ${this.textContent}`);
+                }
+            });
+        });
+    }
+
+    // ===============================================
+    // PAGE NAVIGATION & PRODUCT DETAIL
+    // ===============================================
+
+    function openSection(sectionId) {
+        document.querySelectorAll(".page-section").forEach((sec) => {
+            sec.style.display = "none";
+        });
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.style.display = "block";
+        }
+
+        // Jika ke halaman checkout, update tampilan
+        if (sectionId === "checkoutPage") {
+            if (typeof renderCheckoutItems === "function") {
+                renderCheckoutItems();
+            }
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    window.openSection = openSection;
+
+    window.showDetail = function (title, price, desc, image, id) {
+        openSection("productDetailPage");
+
+        currentDetailProduct = {
+            id: id || title.replace(/\s/g, "_"),
+            name: title,
+            price: Number(price),
+            image: image,
+        };
+
+        document.getElementById("detailTitle").textContent = title;
+        document.getElementById("detailPrice").textContent =
+            "Rp " + Number(price).toLocaleString();
+        document.getElementById("detailDescription").innerHTML = desc;
+        document.getElementById("detailImage").src = image;
+    };
+
+    if (detailAddToCartBtn) {
+        detailAddToCartBtn.addEventListener("click", () => {
+            if (currentDetailProduct && currentDetailProduct.name) {
+                addToCart(currentDetailProduct);
+            } else {
+                alert("Terjadi kesalahan: Detail produk tidak ditemukan.");
+            }
+        });
+    }
+
+    // ===============================================
+    // INISIALISASI AKHIR
+    // ===============================================
+    updateCartCountAndSave();
+
+    // Export cart untuk checkout.js
+    window.cartData = cart;
+    window.getCartData = () => cart;
+    window.updateCartDisplay = updateCartDisplay;
 });

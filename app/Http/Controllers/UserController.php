@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
@@ -18,7 +19,6 @@ class UserController extends Controller
 
     public function authenticate(Request $request)
     {
-
         $credentials = $request->validate([
             'email' => 'required|email:dns',
             'password' => 'required'
@@ -27,10 +27,16 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return response()->json(['message' => 'success'], 200);;
+            return redirect()->intended('/');
         };
 
-        return abort(403);
+
+        return redirect('/login');
+    }
+
+    public function buyer()
+    {
+        return view('buyer_dashboard');
     }
 
     /**
@@ -38,7 +44,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('register');
     }
 
     /**
@@ -47,15 +53,15 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'username' => 'required|min:5|max:255',
+            'name' => 'required|min:5|max:255',
             'roles' => 'required',
             'email' => 'required|unique:users|email:dns',
-            'password' => 'required|min:5|max:255'
+            'password' => 'required|min:6|max:255'
         ]);
 
         User::create($validated);
 
-        return redirect('/');
+        return redirect('/login');
     }
 
     /**
@@ -63,7 +69,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('profile');
     }
 
     /**

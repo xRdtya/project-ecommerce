@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 // Auth
 Route::get('/login', [UserController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [UserController::class, 'authenticate']);
+Route::get('/profile', [UserController::class, 'show']);
+Route::get('/buyer', [UserController::class, 'buyer']);
 Route::post('/logout', [UserController::class, 'logout']);
 
 // Register
@@ -14,4 +16,7 @@ Route::get('/register', [UserController::class, 'create']);
 Route::post('/register', [UserController::class, 'store']);
 
 // Main Page
-Route::get('/', [ProductController::class, 'index']);
+Route::get('/', [ProductController::class, 'index'])->middleware('auth');
+Route::get('/seller', [ProductController::class, 'create'])->middleware('auth');
+Route::get('/upload', [ProductController::class, 'show'])->middleware('auth');
+Route::post('/upload', [ProductController::class, 'store'])->middleware('auth');

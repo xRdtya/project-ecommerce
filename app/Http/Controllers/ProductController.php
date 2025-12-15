@@ -23,7 +23,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('seller_dashboard');
     }
 
     /**
@@ -31,7 +31,21 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        // dd($request);
+        $validated = $request->validate([
+            'category_id' => 'required',
+            'title' => 'required',
+            'image' => 'required|image|file|max:2048',
+            'description' => 'required',
+            'seller' => 'required',
+            'price' => 'required'
+        ]);
+        
+        $validated['image'] = $request->file('image')->store('images', 'public');
+
+        Product::create($validated);
+
+        return back();
     }
 
     /**
@@ -39,7 +53,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('upload');
     }
 
     /**
