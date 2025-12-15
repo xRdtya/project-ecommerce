@@ -31,7 +31,7 @@ class UserController extends Controller
         };
 
 
-        return redirect('/login');
+        return redirect('/login')->with('loginError', 'Login Failed!');
     }
 
     public function buyer()

@@ -34,7 +34,7 @@
         </form>
 
         <div class="auth-switch">
-            Sudah punya akun? <a href="/register">Login</a>
+            Sudah punya akun? <a href="/login">Login</a>
         </div>
     </div>
 
