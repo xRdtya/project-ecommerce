@@ -249,7 +249,6 @@
         <script src="checkout.js"></script>
         <!-- halaman checkout -->
         <script>
-            // Inisialisasi checkout jika di halaman checkout
             if (window.location.hash === '#checkout' || document.getElementById('checkoutPage')) {
                 document.addEventListener('DOMContentLoaded', function() {
                     openSection('checkoutPage');
