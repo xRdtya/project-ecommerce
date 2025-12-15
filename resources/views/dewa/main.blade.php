@@ -7,79 +7,92 @@
         <link rel="stylesheet" href="main.css" />
 
     </head>
+
     <body>
-        
+
         <!-- Header -->
         <header>
             <div class="container">
                 <div class="header-content">
+
                     <a href="#" class="logo" onclick="openSection('home')">TokoOnline</a>
+
                     <button class="mobile-toggle" id="mobileToggle">☰</button>
+
+                    <<!-- Navigasi -->
                     <nav id="mainNav">
                         <ul>
-                            <li><a href="#" onclick="openSection('home')">Home</a></li>
-                            <li><a href="profile.html">Profil</a></li>
-                            <li><a href="login.html">Login▾</a></li>
+                          <li><a href="#" onclick="openSection('home')">Home</a></li>
+                          <li><a href="profile.html">Profil</a></li>
+                          <li><a href="login.html">Login▾</a></li>
                         </ul>
-                    </nav>
+                  </nav>
+
                     <div class="header-actions">
+
+                        <!-- Search -->
                         <form class="search-form">
                             <input type="text" class="search-input" placeholder="Cari produk...">
                             <button type="submit" class="search-btn">🔍</button>
                         </form>
+
                         <!-- Cart -->
                         <button class="cart-btn" id="cartBtn">
                             🛒 <span class="cart-count">0</span>
                         </button>
+
+                        <!-- Checkout -->
                         <button class="btn btn-primary" onclick="openSection('checkoutPage')">
                             Checkout
                         </button>
+
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Overlay untuk cart -->
+        <!--  Overlay untuk cart -->
         <div class="overlay" id="overlay"></div>
 
-        <!-- Cart Sidebar -->
+        <!-- cart -->
         <div class="cart-sidebar" id="cartSidebar">
-            <h3>Keranjang Belanja</h3>
-            <button class="close-cart" id="closeCart">X</button>
-            <div id="emptyCartMessage" style="text-align: center; padding: 20px;">Keranjang kosong.</div>
-            <div id="cartItemsList" class="cart-items"></div>
-            <div class="cart-summary">
-                <h4>Total: <span id="cartTotal">Rp 0</span></h4>
-                <button class="btn btn-primary" id="checkoutBtn" onclick="openSection('checkoutPage')">Checkout</button>
-            </div>
+          <h3>Keranjang Belanja</h3>
+          <button class="close-cart" id="closeCart">X</button>
+          <div id="emptyCartMessage" style="text-align: center; padding: 20px;">Keranjang kosong.</div>
+          <div id="cartItemsList" class="cart-items">
         </div>
-    
+        <div class="cart-summary">
+            <h4>Total: <span id="cartTotal">Rp 0</span></h4>
+            <button class="btn btn-primary" id="checkoutBtn" onclick="openSection('checkoutPage')">Checkout</button>
+          </div>
+        </div>
+
         <!-- HOME SECTION -->
         <section class="page-section active-section" id="home">
-            <div class="container">
-                <section class="hero">
-                    <div class="hero-content">
-                        <h1>Temukan Produk Terbaik Hanya di Sini</h1>
-                        <p>Diskon hingga 50% untuk produk pilihan minggu ini.</p>
-                        <a href="#productsList" class="btn btn-primary">Mulai Belanja</a>
-                    </div>
-                </section>
-
-        <section class="categories container page-section">
-          <h2 class="section-title">Kategori Produk</h2>
-
-          <div class="category-filters">
-            <button class="category-filter active" data-category="all">Semua</button>
-
-            @foreach ( $products->unique('category') as $product )
-              @if ($product->category)
-              <button class="category-filter" data-category="{{ $product->category->name }}">
-                {{ $product->category->name }}
-              </button>
-              @endif
-            @endforeach
+      <div class="container">
+        <section class="hero">
+          <div class="hero-content">
+            <h1>Temukan Produk Terbaik Hanya di Sini</h1>
+            <p>Diskon hingga 50% untuk produk pilihan minggu ini.</p>
+            <a href="#product-list" class="btn btn-primary">Mulai Belanja</a>
           </div>
         </section>
+
+        <section class="categories container page-section" id="categoriesSection">
+            <h2 class="section-title">Kategori Produk</h2>
+
+            <div class="category-filters">
+                <button class="category-filter active" data-category="all">Semua</button>
+
+                @foreach ( $products->unique('category') as $product )
+                    @if ($product->category)
+                    <button class="category-filter" data-category="{{ $product->category->name }}">
+                        {{ $product->category->name }}
+                    </button>
+                    @endif
+                @endforeach
+            </div>
+        </section>                                                        
 
             <!-- PRODUCT LIST -->
             <section class="container" id="productsList">
@@ -231,8 +244,10 @@
             </div>
         </footer>
 
-
         <!-- Scripts -->
+        <script src="main.js"></script>
+        <script src="checkout.js"></script>
+        <!-- halaman checkout -->
         <script>
             // Inisialisasi checkout jika di halaman checkout
             if (window.location.hash === '#checkout' || document.getElementById('checkoutPage')) {
@@ -241,8 +256,6 @@
                 });
             }
         </script>
-        <script src="main.js"></script>
-        <script src="checkout.js"></script>
 
     </body>
 </html>
