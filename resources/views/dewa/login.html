@@ -22,5 +22,53 @@
         </div>
     </div>
 
+        <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.auth-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = this.querySelector('input[type="email"]').value;
+            const password = this.querySelector('input[type="password"]').value;
+            
+            // Validasi
+            if (!email || !password) {
+                alert('Silahkan isi email dan password');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                alert('Email tidak valid');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Password minimal 6 karakter');
+                return;
+            }
+            
+            // Simulasi login (Buat request ke backend) ==========KLO ngga perlu hapus aja dit==========
+            // Simpan data user ke localStorage
+            localStorage.setItem('userData', JSON.stringify({
+                name: email.split('@')[0],
+                email: email,
+                role: 'buyer' // Default role
+            }));
+            
+            // Tampilkan pesan sukses
+            alert('✅ Login berhasil!');
+            
+            // Redirect ke halaman utama
+            window.location.href = "main.blade.php";
+        });
+        
+        // Cek jika sudah login
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (userData) {
+            alert('Anda sudah login. Redirect ke halaman utama...');
+            window.location.href = "main.blade.php";
+        }
+    });
+    </script>
     </body>
+
 </html>
