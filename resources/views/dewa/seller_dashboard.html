@@ -4,20 +4,132 @@
         <meta charset="UTF-8">
         <title>Dashboard Penjual</title>
         <link rel="stylesheet" href="main.css">
+                <style>
+            .dashboard-container {
+                width: 90%;
+                max-width: 1200px;
+                margin: 40px auto;
+                background: white;
+                padding: 30px;
+                border-radius: 14px;
+                box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            }
+            
+            .dashboard-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .dashboard-header h1 {
+                color: #4a6cf7;
+            }
+            
+            .dashboard-actions {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+            
+            .quick-stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+            
+            .stat-card {
+                background: #f9f9ff;
+                padding: 20px;
+                border-radius: 10px;
+                text-align: center;
+            }
+            
+            .products-list {
+                margin-top: 30px;
+            }
     </head>
     <body>
 
-    <div class="profile-card">
+    <div class="dashboard-container">
+            <div class="dashboard-header">
+                <div>
+                    <h1>Dashboard Penjual</h1>
+                    <p>Kelola toko dan produk Anda di sini</p>
+                </div>
+                <div>
+                    <a href="main.blade.php" class="btn">Lihat Toko</a>
+                    <a href="profile.html" class="btn" style="margin-left: 10px;">Kembali ke Profil</a>
+                </div>
+            </div>
+            
+            <div class="dashboard-actions">
+                <a href="upload.html" class="btn btn-primary">+ Upload Produk Baru</a>
+                <a href="#" class="btn">Kelola Stok</a>
+                <a href="#" class="btn">Lihat Laporan</a>
+            </div>
+            
+            <div id="sellerStats"></div>
+            
+            <div class="products-list">
+                <div id="sellerProductsList">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </div>
 
-        <h2>Dashboard Penjual</h2>
-
-        <p>Kelola produk, statistik dan manajemen toko Anda.</p>
-
-        <a href="upload.html" class="btn btn-primary">Upload Produk</a>
-
-        <br><br>
-        <a href="profile.html" class="btn">Kembali ke Profil</a>
-    </div>
-
+    <script>
+            // Additional seller dashboard functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                // Check for new orders
+                const orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+                const sellerProducts = JSON.parse(localStorage.getItem('sellerProducts')) || [];
+                
+                // Count orders containing seller's products
+                let newOrders = 0;
+                orderHistory.forEach(order => {
+                    order.items.forEach(item => {
+                        if (sellerProducts.some(p => p.id === item.id)) {
+                            newOrders++;
+                        }
+                    });
+                });
+                
+                if (newOrders > 0) {
+                    const notification = document.createElement('div');
+                    notification.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: #4a6cf7;
+                        color: white;
+                        padding: 15px 20px;
+                        border-radius: 8px;
+                        z-index: 10000;
+                        box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    `;
+                    notification.innerHTML = `
+                        <span>🎉</span>
+                        <div>
+                            <strong>${newOrders} pesanan baru!</strong>
+                            <p style="margin: 5px 0 0 0; font-size: 14px;">Cek produk yang terjual</p>
+                        </div>
+                    `;
+                    document.body.appendChild(notification);
+                    
+                    // Remove after 5 seconds
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 5000);
+                }
+            });
+        </script>
     </body>
+
 </html>
