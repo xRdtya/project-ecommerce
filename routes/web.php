@@ -17,6 +17,6 @@ Route::post('/register', [UserController::class, 'store']);
 
 // Main Page
 Route::get('/', [ProductController::class, 'index'])->middleware('auth');
-Route::get('/seller', [ProductController::class, 'create'])->middleware('auth');
-Route::get('/upload', [ProductController::class, 'show'])->middleware('auth');
+Route::get('/seller', [ProductController::class, 'seller'])->middleware('auth');
+Route::get('/upload', [ProductController::class, 'create'])->middleware('auth');
 Route::post('/upload', [ProductController::class, 'store'])->middleware('auth');

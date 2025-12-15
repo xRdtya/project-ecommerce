@@ -21,9 +21,17 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function seller()
     {
         return view('seller_dashboard');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function create(Product $product)
+    {
+        return view('upload');
     }
 
     /**
@@ -46,14 +54,6 @@ class ProductController extends Controller
         Product::create($validated);
 
         return back();
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
-    {
-        return view('upload');
     }
 
     /**
