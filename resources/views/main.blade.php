@@ -153,29 +153,32 @@
 
                     <h2>Checkout</h2>
 
-                    <div id="checkoutItems"></div>
+                    <form action="/checkout" method="post" enctype="application/x-www-form-urlencoded">
+                        <div id="checkoutItems"></div>
+                        <input type="hidden" id="item" name="item" value="">
 
-                    <div class="checkout-wrapper">
+                        <div class="checkout-wrapper">
+                            @csrf
+                            <div class="checkout-left">
+                                <label>Nama</label>
+                                <input id="checkoutName" name="name" type="text" placeholder="Nama penerima" value="{{ auth()->user()->name }}">
 
-                        <div class="checkout-left">
-                            <label>Nama</label>
-                            <input id="checkoutName" type="text" placeholder="Nama penerima" value="{{ auth()->user()->name }}">
-
-                            <label>Alamat</label>
-                            <textarea id="checkoutAddress" placeholder="Alamat lengkap"></textarea>
-                        </div>
-
-                        <div class="checkout-right">
-                            <div class="checkout-card">
-                                <h3>Ringkasan</h3>
-                                <p id="checkoutSummaryPrice" class="summary-total">Rp 0</p>
-                                <button id="confirmCheckout" class="checkout-btn checkout-btn-primary">
-                                    Bayar Sekarang
-                                </button>
+                                <label>Alamat</label>
+                                <textarea id="checkoutAddress" name="address" placeholder="Alamat lengkap"></textarea>
                             </div>
-                        </div>
 
-                    </div>
+                            <div class="checkout-right">
+                                <div class="checkout-card">
+                                    <h3>Ringkasan</h3>
+                                    <input type="text" style="pointer-events:none; border: none; background: none;" id="checkoutSummaryPrice" name="summary" class="summary-total"></input>
+                                    <button type="submit" id="confirmCheckout" class="checkout-btn checkout-btn-primary">
+                                        Bayar Sekarang
+                                    </button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </form>
 
                 </div>
 

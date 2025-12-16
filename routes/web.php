@@ -16,9 +16,17 @@ Route::post('/register', [UserController::class, 'store']);
 
 // Main Page
 Route::get('/', [ProductController::class, 'index'])->middleware('auth');
+Route::post('/checkout', [ProductController::class, 'order'])->middleware('auth');
 
 // Roles Page
 Route::get('/seller', [ProductController::class, 'seller'])->middleware('auth', 'role:seller');
 Route::get('/seller/create', [ProductController::class, 'create'])->middleware('auth', 'role:seller');
 Route::post('/seller/create', [ProductController::class, 'store'])->middleware('auth', 'role:seller');
 Route::get('/buyer', [UserController::class, 'buyer'])->middleware('auth', 'role:seller,buyer');
+
+
+
+// Testing
+Route::get('/test', function () {
+    return view('mails.orderMail');
+});

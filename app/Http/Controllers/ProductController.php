@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Mail\OrderMail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
@@ -54,6 +58,22 @@ class ProductController extends Controller
         Product::create($validated);
 
         return back();
+    }
+
+    // Order Form
+    public function order(StoreProductRequest $request)
+    {
+        // $validated = $request->validate([
+
+        // ]);
+
+        $items = json_decode($request->item);
+
+        // dd($request);
+
+        Mail::to('tysaluthfia1@gmail.com')->send(new OrderMail($request, $items));
+
+        return redirect('/');
     }
 
     /**

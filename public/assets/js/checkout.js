@@ -1,3 +1,4 @@
+let product = [];
 function renderCheckoutItems() {
     const cart = window.cartData || [];
     const wrap = document.getElementById("checkoutItems");
@@ -7,7 +8,7 @@ function renderCheckoutItems() {
 
     cart.forEach(item => {
         total += item.price * item.qty;
-
+        
         wrap.innerHTML += `
             <div class="checkout-item">
                 <img src="${item.image}">
@@ -18,12 +19,14 @@ function renderCheckoutItems() {
                 </div>
             </div>
         `;
+        product.push(item)
     });
+    
+    document.getElementById("checkoutSummaryPrice").value = "Rp " + total.toLocaleString();
+    document.getElementById("item").value = JSON.stringify(product);
+    // console.log(product)
 
-    document.getElementById("checkoutSummaryPrice").textContent =
-        "Rp " + total.toLocaleString();
-
-    return total;
+    return total, product;
 }
 
 /* Render*/
@@ -39,10 +42,10 @@ if (confirmBtn) {
         const name = document.getElementById("checkoutName").value.trim();
         const address = document.getElementById("checkoutAddress").value.trim();
 
-        if (!name || !address) {
-            alert("Nama dan alamat wajib diisi.");
-            return;
-        }
+        // if (!name || !address) {
+        //     alert("Nama dan alamat wajib diisi.");
+        //     return;
+        // }
 
         alert("Checkout berhasil (frontend). Backend Laravel akan memproses transaksi.");
 
