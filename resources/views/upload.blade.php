@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Upload Produk</title>
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
     <style>
@@ -20,7 +20,7 @@
 
     <h2>Upload Produk Baru</h2>
 
-    <form id="uploadForm" method="POST" action="/upload" enctype="multipart/form-data">
+    <form id="uploadForm" method="POST" action="/seller/create" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="seller" value="{{ auth()->user()->name }}">
         <input type="hidden" name="category_id" value="2">
@@ -44,7 +44,7 @@
 
 </div>
 
-<script src="assets/js/upload.js"></script>
+<script src="../assets/js/upload.js"></script>
 <script>
     document.addEventListener("trix-file-accept", function(event) {
         event.preventDefault();

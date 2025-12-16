@@ -159,7 +159,7 @@
 
                         <div class="checkout-left">
                             <label>Nama</label>
-                            <input id="checkoutName" type="text" placeholder="Nama penerima">
+                            <input id="checkoutName" type="text" placeholder="Nama penerima" value="{{ auth()->user()->name }}">
 
                             <label>Alamat</label>
                             <textarea id="checkoutAddress" placeholder="Alamat lengkap"></textarea>

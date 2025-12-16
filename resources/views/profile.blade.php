@@ -14,11 +14,11 @@
         <p id="profileEmail">{{ auth()->user()->email }}</p>
 
         <p>Role: <strong id="roleText">{{ auth()->user()->roles }}</strong></p>
-        @if (auth()->user()->roles == 'buyer')
-        <a id="roleBtn" href="/buyer" class="btn btn-primary">Menu Pembeli</a>
+        @if (auth()->user()->roles == 'seller')
+            <a id="roleBtn" href="/seller" class="btn btn-primary">Menu Penjual</a>
         @endif
         
-        <a id="roleBtn" href="/seller" class="btn btn-primary">Menu Penjual</a>
+        <a id="roleBtn" href="/buyer" class="btn btn-primary">Menu Pembeli</a>
         <br><br>
         <form action="/logout" method="post">
             @csrf

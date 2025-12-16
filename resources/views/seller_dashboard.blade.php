@@ -68,7 +68,7 @@
             </div>
             
             <div class="dashboard-actions">
-                <a href="/upload" class="btn btn-primary">+ Upload Produk Baru</a>
+                <a href="/seller/create" class="btn btn-primary">+ Upload Produk Baru</a>
                 <a href="#" class="btn">Kelola Stok</a>
                 <a href="#" class="btn">Lihat Laporan</a>
             </div>
