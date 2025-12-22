@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\StoreUserRequest;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
@@ -17,14 +20,9 @@ class UserController extends Controller
         return view('login');
     }
 
-    public function authenticate(Request $request)
+    public function authenticate(LoginUserRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email:dns',
-            'password' => 'required'
-        ]);
-
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->validated())) {
             $request->session()->regenerate();
 
             return redirect()->intended('/');
@@ -50,16 +48,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request, UserService $service)
     {
-        $validated = $request->validate([
-            'name' => 'required|min:5|max:255',
-            'roles' => 'required',
-            'email' => 'required|unique:users|email:dns',
-            'password' => 'required|min:6|max:255'
-        ]);
-
-        User::create($validated);
+        $service->create($request->validated());
 
         return redirect('/login');
     }
@@ -104,6 +95,6 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

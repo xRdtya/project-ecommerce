@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\OrderProductRequest;
 use App\Mail\OrderMail;
+use App\Services\ProductService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
@@ -41,37 +42,22 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(StoreProductRequest $request, ProductService $service)
     {
-        // dd($request);
-        $validated = $request->validate([
-            'category_id' => 'required',
-            'title' => 'required',
-            'image' => 'required|image|file|max:2048',
-            'description' => 'required',
-            'seller' => 'required',
-            'price' => 'required'
-        ]);
-        
+        $validated = $request->validated();
         $validated['image'] = $request->file('image')->store('images', 'public');
 
-        Product::create($validated);
+        $service->create($validated);
 
         return back();
     }
 
     // Order Form
-    public function order(StoreProductRequest $request)
+    public function order(OrderProductRequest $request)
     {
-        // $validated = $request->validate([
-
-        // ]);
-
         $items = json_decode($request->item);
 
-        // dd($request);
-
-        Mail::to('tysaluthfia1@gmail.com')->send(new OrderMail($request, $items));
+        Mail::to(Auth::user()->email)->send(new OrderMail($request->validated(), $items));
 
         return redirect('/');
     }

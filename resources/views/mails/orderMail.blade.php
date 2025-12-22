@@ -20,14 +20,13 @@
     </style>
 </head>
 <body>
-    {{-- <h1>Hai {{ $data['name'] }}</h1> --}}
     <div class="center">
         <div class="grid">
-            <h1>Hai, Noufal Raditya Wardana</h1>
+            <h1>Hai, {{ $data['name'] }}</h1>
             <br>
             <p>Berikut rincian pesanan dan rincian pembayaran </p>
             <div style="display: flex; justify-content: space-around;">
-                @foreach ($items as $item)   
+            @foreach ($items as $item)   
                 <div>
                     <p>Nama:</p>
                     <p>Jumlah:</p>
@@ -38,7 +37,7 @@
                     <p>{{ $item->qty }}</p>
                     <p>Rp {{ number_format($item->price) }}</p>
                 </div>
-                @endforeach
+            @endforeach
             </div>
             <hr>
             <div style="display: flex; justify-content: space-around;">
@@ -47,9 +46,9 @@
                     <p>Email:</p>
                     <p>Alamat:</p>
                 </div>
-                <div class="">
+                <div style="width: min-content;">
                     <p>{{ $data['name'] }}</p>
-                    <p>noufalraditya06@gmail.com</p>
+                    <p>tysaluthfia1@gmail.com</p>
                     <p>{{ $data['address'] }}</p>
                 </div>
             </div>
